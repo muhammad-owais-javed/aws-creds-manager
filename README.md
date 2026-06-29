@@ -61,14 +61,6 @@ This script:
 - Complete cleanup option to remove all traces of credentials
 
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/newFeature`)
-3. Commit your changes (`git commit -m 'Add some New Feature'`)
-4. Push to the branch (`git push origin feature/newFeature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
