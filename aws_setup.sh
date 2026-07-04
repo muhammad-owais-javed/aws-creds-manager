@@ -28,18 +28,15 @@ setup_directory() {
 validate_aws_credentials() {
     echo -e "${YELLOW}Validating AWS credentials...${NC}"
 
-    # Make sure that AWS CLI is installed
     if ! command -v aws &> /dev/null; then
         echo -e "${RED}Error: AWS CLI is not installed. Please install it and try again.${NC}"
         return 1
     fi
 
-    # Temporary environment variables for validation
     export AWS_ACCESS_KEY_ID="$1"
     export AWS_SECRET_ACCESS_KEY="$2"
     export AWS_REGION="$3"
 
-    # Validating AWS credentials
     if aws sts get-caller-identity &> /dev/null; then
         echo -e "${GREEN}AWS credentials are valid.${NC}"
         return 0
@@ -85,10 +82,8 @@ update_shell_rc() {
     local source_cmd="[ -f $env_file ] && source $env_file"
     local updated=false
 
-    #Detect user's shell
     local shell_name=$(basename "$SHELL")
     
-    # Updating rc file based on shell
     case "$shell_name" in
         bash)
             local bash_rc="$HOME/.bashrc"
@@ -118,13 +113,12 @@ update_shell_rc() {
     fi
 }
 
-# Main
+# Main 
 echo -e "${GREEN}=== AWS Credentials Setup ===${NC}"
 echo -e "${YELLOW}This script will configure AWS credentials for use with tools like Terraform and Ansible.${NC}"
 
 setup_directory
 
-# Checking if credentials are set in environment variables
 if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
     echo -e "${YELLOW}AWS credentials detected in environment variables.${NC}"
     read -p "Do you want to use these existing AWS environment variables? (y/n): " choice
@@ -168,12 +162,10 @@ done
 if validate_aws_credentials "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_REGION"; then
     store_aws_config "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_REGION"
     
-    # Setting environment variables forcurrent session
     export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
     export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
     export AWS_REGION="$AWS_REGION"
 
-    # Updating shell for persistence
     update_shell_rc
     
     echo -e "${GREEN}Setup complete. Your AWS tools are ready to use.${NC}"
